@@ -1,0 +1,9 @@
+{
+  "name": "THEIA",
+  "description": "An accessible indoor navigation assistant for visually impaired users, featuring adaptive voice guidance, obstacle detection, and AI-powered environmental descriptions.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
+}
