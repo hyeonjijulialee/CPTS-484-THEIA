@@ -8,13 +8,10 @@ import { Navbar } from '../components/Navbar';
 const Emergency: React.FC = () => {
   const navigate = useNavigate();
   const { speak, vibrate, settings } = useAccessibility();
-  
-  // State for countdown timer and UI modes (active countdown vs sent success)
   const [countdown, setCountdown] = useState(5);
   const [active, setActive] = useState(false);
   const [sent, setSent] = useState(false);
 
-  // Start 5-second countdown before sending alert
   const handleEmergencyTrigger = (type: 'Security' | 'Contact') => {
     setActive(true);
     const msg = type === 'Security' ? "Calling Security" : "Alerting Contact";
@@ -33,18 +30,15 @@ const Emergency: React.FC = () => {
       }
     }, 1000);
 
-    // Store interval ID globally to allow cancellation
     (window as any).emergencyInterval = interval;
   };
 
-  // Trigger final alert with strong vibration and audio confirmation
   const sendAlert = () => {
     setSent(true);
     vibrate([200, 100, 200, 100, 500]);
     speak("Alert sent. Help is on the way.");
   };
 
-  // Abort the countdown and reset to initial state
   const cancelEmergency = () => {
     const interval = (window as any).emergencyInterval;
     if (interval) clearInterval(interval);
@@ -53,7 +47,6 @@ const Emergency: React.FC = () => {
     speak("Emergency alert cancelled.");
   };
 
-  // Announce screen entry and cleanup timers on unmount
   useEffect(() => {
       if (!active && !sent) {
           speak("Emergency mode.");
@@ -62,10 +55,8 @@ const Emergency: React.FC = () => {
           const interval = (window as any).emergencyInterval;
           if (interval) clearInterval(interval);
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // 1. Render Success Screen (Alert Sent)
   if (sent) {
       return (
         <div className="flex flex-col h-screen p-8 items-center justify-center text-center bg-rose-600 text-white">
@@ -92,7 +83,6 @@ const Emergency: React.FC = () => {
       )
   }
 
-  // 2. Render Countdown Screen
   if (active) {
       return (
         <div className="flex flex-col h-screen bg-slate-900 items-center justify-center p-8">
@@ -107,20 +97,18 @@ const Emergency: React.FC = () => {
                 label="CANCEL"
                 onClick={cancelEmergency} 
                 icon={<XOctagon size={32} />}
-                className="bg-red-600 text-white w-full h-24 text-2xl font-black shadow-2xl hover:bg-red-700"
+                className="bg-red-600 text-white w-full h-24 text-2xl font-black shadow-2xl hover:bg-red-700 border-none"
             />
         </div>
       );
   }
 
-  // 3. Render Main Emergency Dashboard
   return (
     <div className="flex flex-col h-screen bg-slate-50">
       <Navbar title="Emergency" />
       
       <div className="flex-1 p-6 flex flex-col gap-6 justify-center max-w-lg mx-auto w-full">
         
-        {/* Current Location Info Card */}
         <div className="bg-white p-8 rounded-[2.5rem] text-center shadow-sm border border-slate-100">
              <div className="w-16 h-16 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center mx-auto mb-4">
                 <MapPin size={32} />
@@ -130,7 +118,6 @@ const Emergency: React.FC = () => {
              <p className="text-lg font-bold text-slate-500">Floor 4, near Room 427</p>
         </div>
 
-        {/* Action Buttons */}
         <div className="flex-1 flex flex-col gap-5 justify-center pb-12">
             <AccessibleButton
                 label="Call Security"

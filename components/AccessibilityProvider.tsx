@@ -2,7 +2,6 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { AccessibilitySettings } from '../types';
 import { DEFAULT_SETTINGS } from '../constants';
 
-// Define the shape of the context state and functions
 interface AccessibilityContextType {
   settings: AccessibilitySettings;
   updateSettings: (newSettings: Partial<AccessibilitySettings>) => void;
@@ -13,36 +12,27 @@ interface AccessibilityContextType {
 const AccessibilityContext = createContext<AccessibilityContextType | undefined>(undefined);
 
 export const AccessibilityProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  // Initialize state with default accessibility settings
   const [settings, setSettings] = useState<AccessibilitySettings>(DEFAULT_SETTINGS);
 
-  // Merge new settings into the existing state
   const updateSettings = (newSettings: Partial<AccessibilitySettings>) => {
     setSettings((prev) => ({ ...prev, ...newSettings }));
   };
 
-  // Trigger device vibration if enabled in settings
   const vibrate = (pattern: number | number[] = 50) => {
     if (settings.vibrationEnabled && navigator.vibrate) {
       navigator.vibrate(pattern);
     }
   };
 
-  // Handle Text-to-Speech logic
   const speak = (text: string, interrupt = true) => {
-    if (!window.speechSynthesis) return; // Exit if TTS is unavailable
-    
-    // Stop any currently speaking audio if interrupt is true
+    if (!window.speechSynthesis) return;
     if (interrupt) {
       window.speechSynthesis.cancel();
     }
-
-    // Configure speech parameters
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.rate = settings.voiceSpeed;
     utterance.lang = 'en-US'; 
     
-    // English + Female voice
     const voices = window.speechSynthesis.getVoices();
     const femaleVoice = voices.find(voice => 
       voice.lang.startsWith('en') && (
@@ -53,7 +43,6 @@ export const AccessibilityProvider: React.FC<{ children: ReactNode }> = ({ child
       )
     );
 
-    // Apply the selected voice if found
     if (femaleVoice) {
       utterance.voice = femaleVoice;
     }
@@ -63,7 +52,6 @@ export const AccessibilityProvider: React.FC<{ children: ReactNode }> = ({ child
 
   return (
     <AccessibilityContext.Provider value={{ settings, updateSettings, speak, vibrate }}>
-      {/* Wrapper div applying global base styles and transitions */}
       <div className="min-h-screen transition-colors duration-300 bg-slate-50 text-slate-900 font-sans selection:bg-indigo-100 selection:text-indigo-900">
         {children}
       </div>
@@ -71,7 +59,6 @@ export const AccessibilityProvider: React.FC<{ children: ReactNode }> = ({ child
   );
 };
 
-// Custom hook to access the context safely
 export const useAccessibility = () => {
   const context = useContext(AccessibilityContext);
   if (!context) {

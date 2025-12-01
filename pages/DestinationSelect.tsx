@@ -13,30 +13,26 @@ const DestinationSelect: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isListening, setIsListening] = useState(false);
 
-  // Announce instructions when screen loads
   useEffect(() => {
     speak("Select your destination.");
   }, []);
 
-  // Navigate to selected place with audio confirmation
   const handleDestinationClick = (dest: Destination) => {
     speak(`Navigating to ${dest.name}`);
     navigate('/navigation', { state: { destination: dest } });
   };
 
-  // Filter destinations by name or category
   const filteredDestinations = MOCK_DESTINATIONS.filter(d => 
     d.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
     d.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Simulate voice search activation
   const toggleVoiceInput = () => {
     vibrate(100);
     if (!isListening) {
       setIsListening(true);
       speak("Listening...");
-      // Mock voice input delay and result
+      // Mock voice input
       setTimeout(() => {
         setIsListening(false);
         setSearchTerm("Room");
@@ -53,7 +49,7 @@ const DestinationSelect: React.FC = () => {
 
       <div className="flex-1 flex flex-col gap-6 p-6 max-w-lg mx-auto w-full overflow-hidden">
         
-        {/* Search Section */}
+        {/* Search Bar */}
         <div className="flex gap-3 items-stretch shrink-0">
           <div className="relative flex-1">
             <input
@@ -65,8 +61,6 @@ const DestinationSelect: React.FC = () => {
             />
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={24} />
           </div>
-          
-          {/* Voice Input Button */}
           <button 
             onClick={toggleVoiceInput}
             className={`p-4 rounded-2xl transition-all duration-300 ${isListening ? 'bg-rose-500 animate-pulse' : 'bg-indigo-600'} text-white shadow-md flex items-center justify-center w-16 shrink-0 active:scale-95`}
@@ -76,7 +70,7 @@ const DestinationSelect: React.FC = () => {
           </button>
         </div>
 
-        {/* Scrollable Destination List */}
+        {/* List - Scrollbar hidden but scrollable */}
         <div className="flex-1 overflow-y-auto flex flex-col gap-3 pb-8 pr-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           {filteredDestinations.map(dest => (
             <button
@@ -94,7 +88,6 @@ const DestinationSelect: React.FC = () => {
             </button>
           ))}
           
-          {/* Empty State Fallback */}
           {filteredDestinations.length === 0 && (
             <div className="p-10 text-center opacity-50 font-medium">
               No places found.

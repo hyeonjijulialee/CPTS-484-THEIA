@@ -8,29 +8,25 @@ import { Type, Smartphone, Volume2, User, Save, MapPin, Zap } from 'lucide-react
 const Settings: React.FC = () => {
   const { settings, updateSettings, speak, vibrate } = useAccessibility();
 
-  // Local state for form inputs (Emergency Contact)
+  // Local state for form inputs
   const [contactName, setContactName] = useState(settings.emergencyContactName);
   const [contactPhone, setContactPhone] = useState(settings.emergencyContactPhone);
 
-  // Sync local state with global settings when they change
   useEffect(() => {
       setContactName(settings.emergencyContactName);
       setContactPhone(settings.emergencyContactPhone);
   }, [settings.emergencyContactName, settings.emergencyContactPhone]);
 
-  // Adjust TTS speed and announce change
   const handleVoiceSpeed = (speed: number) => {
     updateSettings({ voiceSpeed: speed });
     speak(`Speed ${speed}x`);
   };
 
-  // Adjust global font size and confirm
   const handleFontSize = (size: FontSize) => {
     updateSettings({ fontSize: size });
     speak("Text size adjusted");
   };
 
-  // Save contact details to global context
   const handleSaveContact = () => {
       updateSettings({ 
           emergencyContactName: contactName, 
@@ -46,7 +42,7 @@ const Settings: React.FC = () => {
       
       <div className="flex-1 p-6 flex flex-col gap-6 overflow-y-auto max-w-lg mx-auto w-full pb-10">
         
-        {/* 1. Text Size Controls */}
+        {/* Text Size Section */}
         <section className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
             <div className="flex items-center gap-3 mb-4 opacity-60">
                 <Type size={20} />
@@ -65,7 +61,6 @@ const Settings: React.FC = () => {
                             }
                         `}
                     >
-                        {/* Visual representation of size increasing */}
                         <span className={
                             idx === 0 ? 'text-sm font-medium' : 
                             idx === 1 ? 'text-base font-bold' : 
@@ -77,7 +72,7 @@ const Settings: React.FC = () => {
             </div>
         </section>
 
-        {/* 2. Voice Speed Slider */}
+        {/* Voice Speed Section */}
         <section className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
             <div className="flex items-center gap-3 mb-4 opacity-60">
                 <Volume2 size={20} />
@@ -102,7 +97,7 @@ const Settings: React.FC = () => {
             </div>
         </section>
 
-        {/* 3. Feature Toggles (Vibration & Location) */}
+        {/* Toggles Group */}
         <div className="flex flex-col gap-3">
             {/* Vibration Toggle */}
             <section className="bg-white p-1 rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
@@ -124,7 +119,6 @@ const Settings: React.FC = () => {
                         </div>
                     </div>
                     
-                    {/* Custom Switch UI */}
                     <div className={`w-14 h-8 rounded-full relative transition-colors duration-300 ${settings.vibrationEnabled ? 'bg-indigo-600' : 'bg-slate-200'}`}>
                         <div className={`absolute top-1 w-6 h-6 bg-white rounded-full shadow-sm transition-all duration-300 ${settings.vibrationEnabled ? 'translate-x-7' : 'translate-x-1'}`} />
                     </div>
@@ -158,7 +152,7 @@ const Settings: React.FC = () => {
             </section>
         </div>
 
-        {/* 4. Emergency Contact Form */}
+        {/* Emergency Contact Section */}
         <section className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
              <div className="flex items-center gap-3 mb-6 opacity-60">
                 <User size={20} />

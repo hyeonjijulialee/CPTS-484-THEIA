@@ -1,7 +1,6 @@
 import React from 'react';
 import { useAccessibility } from './AccessibilityProvider';
 
-// Define button props extending standard HTML button attributes
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label: string;
   variant?: 'primary' | 'danger' | 'secondary' | 'ghost';
@@ -18,28 +17,22 @@ export const AccessibleButton: React.FC<Props> = ({
   className = '',
   ...props 
 }) => {
-  // Access accessibility tools from global context
   const { speak, vibrate, settings } = useAccessibility();
 
-  // Trigger haptic feedback on click before executing the action
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     vibrate(50);
     if (onClick) onClick(e);
   };
 
-  // Announce button label via TTS when focused
   const handleFocus = () => {
     speak(label, true);
   };
 
-  // Base styles for layout, animation, and focus states
   let baseStyles = "relative overflow-hidden rounded-3xl font-bold transition-all duration-300 flex items-center justify-center gap-4 p-6 shadow-sm active:scale-[0.98] hover:shadow-md focus:outline-none focus:ring-4 focus:ring-offset-2";
   
-  // Apply dynamic font size from settings
   const textSize = settings.fontSize;
   let colorStyles = "";
 
-  // Determine color scheme based on the variant prop
   switch (variant) {
     case 'primary':
       colorStyles = "bg-indigo-600 text-white shadow-indigo-200 hover:bg-indigo-700 focus:ring-indigo-500";

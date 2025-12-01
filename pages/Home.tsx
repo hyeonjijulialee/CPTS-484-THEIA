@@ -6,14 +6,11 @@ import { useAccessibility } from '../components/AccessibilityProvider';
 import { Navbar } from '../components/Navbar';
 
 const Home: React.FC = () => {
-  // Initialize hooks for routing and text-to-speech
   const navigate = useNavigate();
   const { speak } = useAccessibility();
 
-  // Announce welcome message on screen load
   useEffect(() => {
     speak("Welcome to Theia.");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -22,7 +19,6 @@ const Home: React.FC = () => {
       
       <main className="flex-1 p-6 flex flex-col gap-5 overflow-y-auto max-w-lg mx-auto w-full pb-8">
         
-        {/* Primary Action Buttons (Navigation & Vision) */}
         <div className="flex flex-col gap-4 flex-1 justify-center">
             <AccessibleButton
                 label="Navigation"
@@ -43,7 +39,6 @@ const Home: React.FC = () => {
             />
         </div>
 
-        {/* Critical Emergency Button fixed at the bottom */}
         <div className="h-32 shrink-0">
           <AccessibleButton
             label="Emergency"

@@ -12,17 +12,14 @@ const LiveView: React.FC = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [description, setDescription] = useState("");
 
-  // Initialize camera and cleanup on unmount
   useEffect(() => {
     startCamera();
     speak("Live view active. Tap scan for description.");
     return () => {
       stopCamera();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Initialize rear-facing camera stream
   const startCamera = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ 
@@ -37,7 +34,6 @@ const LiveView: React.FC = () => {
     }
   };
 
-  // Release camera resources to save battery/memory
   const stopCamera = () => {
     if (videoRef.current && videoRef.current.srcObject) {
       const stream = videoRef.current.srcObject as MediaStream;
@@ -45,7 +41,6 @@ const LiveView: React.FC = () => {
     }
   };
 
-  // Capture current frame, convert to image, and request AI analysis
   const captureAndAnalyze = async () => {
     if (!videoRef.current || !canvasRef.current) return;
 
@@ -58,16 +53,13 @@ const LiveView: React.FC = () => {
     const context = canvas.getContext('2d');
 
     if (context) {
-      // Draw video frame to invisible canvas
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
       
-      // Convert to Base64 and send to Gemini AI
       const base64Image = canvas.toDataURL('image/jpeg').split(',')[1];
       const result = await analyzeEnvironment(base64Image);
       
-      // Update UI and announce result via TTS
       setDescription(result);
       speak(result);
       vibrate(100);
@@ -79,7 +71,6 @@ const LiveView: React.FC = () => {
     <div className="flex flex-col h-screen bg-black">
       <Navbar title="Live View" />
       
-      {/* Camera Viewfinder Area */}
       <div className="relative flex-1 overflow-hidden flex items-center justify-center bg-slate-900">
         <video 
           ref={videoRef} 
@@ -89,7 +80,7 @@ const LiveView: React.FC = () => {
         />
         <canvas ref={canvasRef} className="hidden" />
         
-        {/* Text Description Overlay */}
+        {/* Description Overlay */}
         <div className="absolute bottom-0 left-0 right-0 p-8 min-h-[200px] bg-gradient-to-t from-black/90 via-black/60 to-transparent flex items-center justify-center">
           <p className={`${settings.fontSize} font-bold leading-relaxed text-white drop-shadow-md text-center`}>
             {isAnalyzing ? "Analyzing environment..." : (description || "Point camera and tap Scan.")}
@@ -97,7 +88,6 @@ const LiveView: React.FC = () => {
         </div>
       </div>
 
-      {/* Bottom Control Area */}
       <div className="p-6 bg-black border-t border-white/10">
         <AccessibleButton
           label={isAnalyzing ? "Analyzing..." : "Scan Scene"}

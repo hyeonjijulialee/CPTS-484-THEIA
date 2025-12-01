@@ -1,4 +1,3 @@
-
 export enum FontSize {
   SMALL = 'text-base',
   MEDIUM = 'text-xl',
@@ -8,7 +7,7 @@ export enum FontSize {
 
 export interface AccessibilitySettings {
   fontSize: FontSize;
-  voiceSpeed: number;
+  voiceSpeed: number; // 0.5 to 2.0
   vibrationEnabled: boolean;
   locationSharingEnabled: boolean;
   emergencyContactName: string;
@@ -18,7 +17,7 @@ export interface AccessibilitySettings {
 export interface Destination {
   id: string;
   name: string;
-  category: string;
+  category: string; // Classroom, Office, Restroom, etc.
   floor: string;
 }
 

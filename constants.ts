@@ -1,4 +1,3 @@
-
 import { FontSize, Destination } from './types';
 
 export const DEFAULT_SETTINGS = {
@@ -16,7 +15,7 @@ export const MOCK_DESTINATIONS: Destination[] = [
   { id: '3', name: 'EME 120', category: 'Classroom', floor: '1st' },
   { id: '4', name: 'Main Elevator in EECS', category: 'Elevator', floor: 'All' },
   { id: '5', name: 'CUB', category: 'Common Area', floor: '1st' },
-  { id: '6', name: 'Holland and Terrell Library', category: 'Common Area', floor: '1st' },
+  { id: '6', name: 'Holland and Terral Library', category: 'Common Area', floor: '1st' },
 ];
 
 export const NAVIGATION_STEPS = [
